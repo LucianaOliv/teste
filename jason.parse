@@ -1,0 +1,111 @@
+// transformar JSON
+
+var texto = '{"atributo1": "valor 1", "atributo2": 23}';
+var objeto = JSON.parse(texto);
+console.log(objeto);
+
+
+//////////////////////////////////////////////////////////////////
+seriação em c, ver como faz em javascript
+
+public class CustomerQuantAnalis { 
+    public string Name { get; set; } 
+    public string acendeu { get; set; } 
+    public string download { get; set; } 
+    public string evolução {get; set}
+
+
+/////////////////////////////////////////////////////////////////////
+???
+////////////////////////////////////////////
+Inferno Invenira
+
+Configuração de atividade
+Deploy de atividade
+Analytics de atividade
+1. Configuração de atividade
+
+Este pedido é um simples GET sem parâmetros ao URL do vosso serviço de configuração, previamente especificado no registo do Activity Provider.
+
+A resposta deve ser uma página Web que permite ao utilizador (learning designer, professor ou formador) configurar a atividade. Essa página não guarda nada no Activity Provider: é a Inven!RA que a apresenta ao utilizador e recolhe os valores dos parâmetros previamente especificados no registo do Activity Provider, no item json_params.
+
+2. Deploy de atividade
+
+Este pedido ocorre quando um aluno inicia ou prossegue uma atividade. A Inven!RA faz um pedido POST cujo conteúdo é código JSON com um ID da atividade fornecido pela Inven!RA, um ID de aluno fornecido pela Inven!RA, e os parâmetros que o Activity Provider indicou no registo (item json_params) preenchidos, com os valores especificados pelo learning designer/professor/formador na fase de configuração:
+
+{
+  "activityID": "This string is the Inven!RA activity ID",
+  "Inven!RAstdID": "This string is the student Inven!RA ID",
+  "json_params": {
+    "s1" : "Setting 1",
+    "s2" : "Setting 2",
+    "s3" : "Setting 3"
+  }
+}
+
+A resposta deve ser um URL para o qual será redirecionado o aluno. Este URL contém os parâmetros que o Activity Provider necessite para poder registar dados analíticos da atividade deste aluno nesta atividades específica (activityID e Inven!RAstdID), que no primeiro acesso do aluno a ela, quer nos acessos posteriores.
+
+3. Analytics de atividade
+
+Este pedido ocorre quando um professor ou formador pretende consultar o desenrolar das atividades. A Inven!RA faz um pedido POST cujo conteúdo é código JSON com um ID da atividade fornecido pela Inven!RA:
+
+{
+  "activityID": "This string is the Inven!RA activity ID"
+}
+
+A resposta deve ser uma string JSON com os valores dos dados analíticos de todos os alunos que fizeram deploy da atividade, no formato registado originalmente pelo Activity Provider no item “analytics". As analíticas quantitativas estão no item "quantAnalytics", as qualitativas no "qualAnalytics", sendo cada uma um URL que a Inven!RA pode utilizar para obter do vosso ActivityProvider uma página com o conteúdo específico dessa analítica, para esse aluno, nessa atividade.
+
+Segue-se um exemplo de string de resposta a um pedido de analytics de atividade.  
+
+[
+  {
+    "inveniraStdID": 1001,
+    "quantAnalytics": [
+      {
+        "name": "Acedeu à atividade",
+        "value": true
+      },
+      {
+        "name": "Download documento 1",
+        "value": true
+      },
+      {
+        "name": "Evolução pela atividade (%)",
+        "value": "33.3"
+      }
+    ],
+    "qualAnalytics": [
+      {
+        "Student activity profile": "https://ActivityProvider/?APAnID=11111111"
+      },
+      {
+        "Actitivy Heat Map": "https://ActivityProvider/?APAnID=21111111"
+      }
+    ]
+  },
+  {
+    "inveniraStdID": 1002,
+    "quantAnalytics": [
+      {
+        "name": "Acedeu à atividade",
+        "value": true
+      },
+      {
+        "name": "Download documento 1",
+        "value": false
+      },
+      {
+        "name": "Evolução pela atividade (%)",
+        "value": "10.0"
+      }
+    ],
+    "qualAnalytics": [
+      {
+        "Student activity profile": "https://ActivityProvider/?APAnID=11111112"
+      },
+      {
+        "Actitivy Heat Map": "https://ActivityProvider/?APAnID=21111112"
+      }
+    ]
+  }
+]
